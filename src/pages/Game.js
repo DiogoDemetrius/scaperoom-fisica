@@ -104,92 +104,92 @@ const Game = () => {
 
   const groupName = token ? JSON.parse(atob(token.split('.')[1])).group.toUpperCase() : 'AGENTES-THERMO';
 
-  useEffect(() => {
-    const fetchProgress = async () => {
-      try {
-        // Simulação de fetch para ambiente de desenvolvimento
-        setProgress({
-          currentQuestion: 0,
-          score: 0,
-          lives: 3
-        });
-        
-        // Versão real com backend:
-        // const res = await fetch('http://localhost:5000/api/game/progress', {
-        //   headers: { Authorization: `Bearer ${token}` }
-        // });
-        // const data = await res.json();
-        // setProgress({
-        //   ...data,
-        //   lives: 3, // Inicia com 3 vidas para cada questão
-        // });
-      } catch (err) {
-        alert('Erro ao carregar progresso');
+useEffect(() => {
+  const fetchProgress = async () => {
+    try {
+      // Requisição para o backend
+      const res = await fetch('https://homologacao-fis-scaperoom-2bqda9mj0-gabriels-projects-d643d367.vercel.app/api/game/progress', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (!res.ok) {
+        throw new Error('Erro ao carregar progresso');
       }
+
+      const data = await res.json();
+      setProgress({
+        ...data,
+        lives: 3 // Inicia com 3 vidas para cada questão
+      });
+    } catch (err) {
+      alert('Erro ao carregar progresso');
+    }
+  };
+
+  setTimeout(() => {
+    fetchProgress();
+  }, 3000); // Tempo para mostrar a introdução
+}, [token]);
+
+// Redireciona para o ranking se tiver terminado
+useEffect(() => {
+  if (progress && progress.currentQuestion >= totalQuestoes) {
+    navigate('/ranking');
+  }
+}, [progress, navigate]);
+
+const handleResponder = async (e) => {
+  e.preventDefault();
+  const atual = questoes[progress.currentQuestion];
+  if (!atual) return;
+
+  const correta = Number(atual.formula(atual.variaveis).toFixed(2));
+  const userResposta = Number(parseFloat(resposta).toFixed(2));
+
+  // Verifica com tolerância para arredondamentos
+  const acertou = Math.abs(userResposta - correta) < 0.01;
+
+  const novasVidas = acertou ? 3 : progress.lives - 1;
+  const novaPontuacao = acertou ? progress.score + 1 : progress.score;
+  const novaQuestao = acertou || novasVidas <= 0 ? progress.currentQuestion + 1 : progress.currentQuestion;
+
+  // Atualiza animação
+  setAnimState(acertou ? 'success' : 'error');
+
+  // Tempo para mostrar a animação
+  setTimeout(async () => {
+    const atualizado = {
+      ...progress,
+      currentQuestion: novaQuestao,
+      score: novaPontuacao,
+      lives: novasVidas > 0 ? novasVidas : 3 // Reseta vidas ao avançar
     };
 
-    setTimeout(() => {
-      fetchProgress();
-    }, 3000); // Tempo para mostrar a introdução
-  }, [token]);
+    try {
+      // Requisição para atualizar o progresso no backend
+      const res = await fetch('https://homologacao-fis-scaperoom-2bqda9mj0-gabriels-projects-d643d367.vercel.app/api/game/progress', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(atualizado)
+      });
 
-  // Redireciona para o ranking se tiver terminado
-  useEffect(() => {
-    if (progress && progress.currentQuestion >= totalQuestoes) {
-      navigate('/ranking');
-    }
-  }, [progress, navigate]);
-
-  const handleResponder = async (e) => {
-    e.preventDefault();
-    const atual = questoes[progress.currentQuestion];
-    if (!atual) return;
-
-    const correta = Number(atual.formula(atual.variaveis).toFixed(2));
-    const userResposta = Number(parseFloat(resposta).toFixed(2));
-    
-    // Verifica com tolerância para arredondamentos
-    const acertou = Math.abs(userResposta - correta) < 0.01;
-
-    const novasVidas = acertou ? 3 : progress.lives - 1;
-    const novaPontuacao = acertou ? progress.score + 1 : progress.score;
-    const novaQuestao = acertou || novasVidas <= 0 ? progress.currentQuestion + 1 : progress.currentQuestion;
-
-    // Atualiza animação
-    setAnimState(acertou ? 'success' : 'error');
-    
-    // Tempo para mostrar a animação
-    setTimeout(() => {
-      const atualizado = {
-        ...progress,
-        currentQuestion: novaQuestao,
-        score: novaPontuacao,
-        lives: novasVidas > 0 ? novasVidas : 3 // Reseta vidas ao avançar
-      };
-
-      try {
-        // Simulação de atualização para ambiente de desenvolvimento
-        setProgress(atualizado);
-        setFeedback(acertou ? atual.feedback.sucesso : atual.feedback.falha);
-        setResposta('');
-        setAnimState('idle');
-        
-        // Versão real com backend:
-        // const res = await fetch('http://localhost:5000/api/game/progress', {
-        //   method: 'PUT',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     Authorization: `Bearer ${token}`
-        //   },
-        //   body: JSON.stringify(atualizado)
-        // });
-        // const data = await res.json();
-        // setProgress(data);
-      } catch (err) {
-        alert('Erro ao atualizar progresso');
+      if (!res.ok) {
+        throw new Error('Erro ao atualizar progresso');
       }
-    }, 1500);
-  };
+
+      const data = await res.json();
+      setProgress(data);
+      setFeedback(acertou ? atual.feedback.sucesso : atual.feedback.falha);
+      setResposta('');
+      setAnimState('idle');
+    } catch (err) {
+      alert('Erro ao atualizar progresso');
+    }
+  }, 1500);
+};
 
   // Renderiza a animação específica para cada tipo de questão
   const renderAnimacao = (tipo, estado) => {
