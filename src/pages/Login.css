@@ -1,0 +1,72 @@
+/* Fundo uniforme escuro */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #111111;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Container centralizado */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: white;
+  background-color: #111111; /* mantém a mesma cor do body */
+}
+
+/* Título com gradiente */
+.page-title {
+  font-size: 2.6em;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #00b894, #6c5ce7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Estilo do formulário */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Campos de entrada escuros */
+.login-form input {
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #1b1b1b;
+  color: white;
+  font-size: 16px;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Estilo ao focar nos inputs */
+.login-form input:focus {
+  outline: none;
+  border: 1px solid #00b894;
+  box-shadow: 0 0 8px rgba(0, 255, 180, 0.2);
+}
+
+/* Botão principal */
+.primary-button {
+  background-color: #00b894;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.primary-button:hover {
+  background-color: #019174;
+}

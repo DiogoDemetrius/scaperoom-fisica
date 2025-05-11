@@ -1,0 +1,113 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(145deg, #111, #1b1b1b, #222);
+    color: #fff;
+  }
+  
+  /* Container principal centralizado */
+  .home-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+  }
+  
+  .home-content-centered {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Título com gradiente */
+  .home-title {
+    font-size: 3em;
+    margin-bottom: 16px;
+    background: linear-gradient(90deg, #00b894, #6c5ce7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+  }
+  
+  .home-subtitle {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: #ccc;
+  }
+  
+  /* Regras */
+  .home-rules h3 {
+    font-size: 1.2em;
+    margin-bottom: 14px;
+    color: #00e6b3;
+  }
+  
+  .home-rules ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    text-align: left;
+    max-width: 600px;
+  }
+  
+  .home-rules li {
+    background: #222;
+    padding: 10px 14px;
+    border-left: 5px solid #00b894;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    color: #f1f1f1;
+    box-shadow: 0 0 4px rgba(0, 255, 180, 0.1);
+  }
+  
+  /* Botão */
+  .start-button {
+    margin: 40px auto 0;
+    background: linear-gradient(90deg, #00b894, #00cec9);
+    color: white;
+    padding: 14px 32px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    max-width: 280px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  .start-button:hover {
+    background: linear-gradient(90deg, #00a87d, #00b6b6);
+  }
+  
+  /* Responsivo */
+  @media (max-width: 600px) {
+    .home-title {
+      font-size: 2em;
+    }
+  
+    .home-subtitle {
+      font-size: 1em;
+    }
+  
+    .home-rules li {
+      font-size: 0.95em;
+    }
+  }
+  
+  .emoji-lock {
+    -webkit-text-fill-color: initial;
+    background: none;
+  }
+  

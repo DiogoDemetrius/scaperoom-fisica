@@ -1,0 +1,85 @@
+.ranking-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #111;
+  color: #fff;
+  padding: 40px 5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* centraliza verticalmente */
+  box-sizing: border-box;
+}
+
+.ranking-title {
+  font-size: 3em;
+  margin-bottom: 40px;
+  background: linear-gradient(90deg, #00b894, #6c5ce7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.ranking-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin-bottom: 50px;
+}
+
+.ranking-card {
+  background-color: #2c2c3a;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 255, 180, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ranking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(0, 255, 180, 0.15);
+}
+
+.top-rank {
+  background: linear-gradient(135deg, #00b894, #6c5ce7);
+  color: white;
+}
+
+.rank-badge {
+  font-size: 2.2em;
+  margin-bottom: 12px;
+}
+
+.rank-group {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.rank-points {
+  font-size: 1.1em;
+  color: #ccc;
+}
+
+.ranking-btn {
+  background-color: #00b894;
+  color: white;
+  padding: 16px 48px;
+  font-size: 1.1em;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  max-width: 300px;
+  width: 100%;
+}
+
+.ranking-btn:hover {
+  background-color: #019174;
+}
