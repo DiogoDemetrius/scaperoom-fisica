@@ -108,7 +108,7 @@ useEffect(() => {
   const fetchProgress = async () => {
     try {
       // Requisição para o backend
-      const res = await fetch('https://homologacao-fis-scaperoom-2bqda9mj0-gabriels-projects-d643d367.vercel.app/api/game/progress', {
+      const res = await fetch('https://homologacao-fis-scaperoom.vercel.app/api/game/progress', {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -167,7 +167,7 @@ const handleResponder = async (e) => {
 
     try {
       // Requisição para atualizar o progresso no backend
-      const res = await fetch('https://homologacao-fis-scaperoom-2bqda9mj0-gabriels-projects-d643d367.vercel.app/api/game/progress', {
+      const res = await fetch('https://homologacao-fis-scaperoom.vercel.app/api/game/progress', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
