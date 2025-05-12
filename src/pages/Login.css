@@ -3,11 +3,12 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #111111;
+  background: linear-gradient(145deg, #0f0f1d, #1a1a2e, #16213e);
   font-family: 'Segoe UI', sans-serif;
+  color: #fff;
 }
 
-/* Container centralizado */
+/* Container centralizado com partículas */
 .page-container {
   min-height: 100vh;
   display: flex;
@@ -16,57 +17,217 @@ html, body {
   justify-content: center;
   padding: 60px 20px;
   color: white;
-  background-color: #111111; /* mantém a mesma cor do body */
+  position: relative;
+  overflow: hidden;
 }
 
-/* Título com gradiente */
+/* Efeito de partículas (adicionado automaticamente via CSS) */
+.page-container::before,
+.page-container::after {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(101, 224, 255, 0.05);
+  animation: floatBubble 15s infinite ease-in-out;
+}
+
+.page-container::before {
+  top: -100px;
+  right: -50px;
+  animation-delay: 0s;
+}
+
+.page-container::after {
+  bottom: -100px;
+  left: -50px;
+  background: rgba(149, 76, 233, 0.05);
+  animation-delay: 7.5s;
+}
+
+@keyframes floatBubble {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.05;
+  }
+  50% {
+    transform: translateY(-50px) scale(1.2);
+    opacity: 0.1;
+  }
+}
+
+/* Título com gradiente aprimorado */
 .page-title {
-  font-size: 2.6em;
-  margin-bottom: 20px;
+  font-size: 3em;
+  margin-bottom: 30px;
   background: linear-gradient(90deg, #00b894, #6c5ce7);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 10px rgba(108, 92, 231, 0.2);
+  position: relative;
+  padding-bottom: 15px;
 }
 
-/* Estilo do formulário */
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00b894, #6c5ce7);
+  border-radius: 3px;
+}
+
+/* Container do formulário com estilo glassmorphism */
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
   width: 100%;
   max-width: 400px;
+  background: rgba(13, 13, 24, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(101, 224, 255, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
-/* Campos de entrada escuros */
+/* Efeito de brilho nos cantos do formulário */
+.login-form::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #00b894, transparent, #6c5ce7, transparent);
+  z-index: -1;
+  border-radius: 22px;
+  opacity: 0.3;
+  animation: borderGlow 3s infinite linear;
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* Campos de entrada melhorados */
 .login-form input {
-  padding: 14px;
-  border-radius: 8px;
-  border: 1px solid #333;
-  background-color: #1b1b1b;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(150, 150, 150, 0.2);
+  background-color: rgba(27, 27, 39, 0.7);
   color: white;
   font-size: 16px;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo ao focar nos inputs */
 .login-form input:focus {
   outline: none;
   border: 1px solid #00b894;
-  box-shadow: 0 0 8px rgba(0, 255, 180, 0.2);
+  box-shadow: 0 0 15px rgba(0, 184, 148, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
-/* Botão principal */
+.login-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Botão principal com gradiente e efeitos */
 .primary-button {
-  background-color: #00b894;
+  background: linear-gradient(90deg, #00b894, #00cec9);
   color: white;
   border: none;
-  padding: 14px;
-  border-radius: 8px;
-  font-size: 1em;
+  padding: 16px;
+  border-radius: 50px;
+  font-size: 1.1em;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4);
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+}
+
+.primary-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
 }
 
 .primary-button:hover {
-  background-color: #019174;
+  background: linear-gradient(90deg, #00a87d, #00b6b6);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 184, 148, 0.6);
+}
+
+.primary-button:hover::before {
+  left: 100%;
+}
+
+.primary-button:disabled {
+  background: linear-gradient(90deg, #666, #888);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.primary-button:active:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 184, 148, 0.4);
+}
+
+/* Mensagem de erro estilizada */
+.error-message {
+  background-color: rgba(255, 76, 76, 0.1);
+  border-left: 3px solid #ff4c4c;
+  color: #ff6b6b;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  margin-top: 8px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 2.2em;
+  }
+  
+  .login-form {
+    padding: 30px 20px;
+  }
 }
