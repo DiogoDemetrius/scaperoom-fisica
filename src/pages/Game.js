@@ -52,7 +52,7 @@ const questoesBase = [
     contexto: 'Anomalia térmica detectada! Espécime causando flutuações de temperatura. Calcule a variação de energia interna.',
     titulo: 'Anomalia Térmica do Novo Espécime',
     texto: ({ mols, temperaturaInicial, pressaoFinal, volumeFinal }) =>
-      `Um tanque contendo um novo espécime com uma habilidade única de controlar a velocidade das partículas ao seu redor está atingindo temperaturas fora do esperado. Sabendo que esse tanque possui ${mols} mols de gás, a temperatura original era de ${temperaturaInicial}ºC e ele passou para o estado de P = ${pressaoFinal}Pa, V = ${volumeFinal}m³. Calcule a variação de energia interna que o tanque sofreu para que os sistemas consigam manter a amostra viva em J. (Use R = 8.31 J/(mol·K))`,
+      `Um tanque contendo um novo espécime com uma habilidade única de controlar a velocidade das partículas ao seu redor está atingindo temperaturas fora do esperado. Sabendo que esse tanque possui ${mols} mols de gás, a temperatura original era de ${temperaturaInicial}ºC e ele passou para o estado de P = ${pressaoFinal}Pa, V = ${volumeFinal}m³. Calcule a variação de energia interna que o tanque sofreu para que os sistemas consigam manter a amostra viva em J.`,
     variavelPorGrupo: {
       grupo1: { mols: 5, temperaturaInicial: 30, pressaoFinal: 50, volumeFinal: 500, respostaCorreta: 18638 },
       grupo2: { mols: 5, temperaturaInicial: 33, pressaoFinal: 60, volumeFinal: 250, respostaCorreta: 3078 },
