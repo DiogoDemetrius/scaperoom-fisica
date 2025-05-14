@@ -10,15 +10,13 @@ const questoesBase = [
     contexto: 'Alerta! Tanque de estabilização comprometido! Calcule a pressão ideal para preservar as espécies.',
     titulo: 'Estabilização do Tanque de Cultivo',
     texto: ({ volume, mols, temperaturaMax }) =>
-      `A pressão no tanque de estabilização foi comprometida, sabendo que as espécies aguentam até ${temperaturaMax}ºC e que esse tanque possui ${volume}L e ${mols} mols desse gás. Qual é a pressão ideal para o tanque em atm? (Use R = 0.082 atm·L/(mol·K))`,
-    formula: ({ volume, mols, temperaturaMax }) => 
-      (mols * 0.082 * (temperaturaMax + 273.15)) / (volume / 1000), // Convertendo L para m³ e temperatura para K
+      `A pressão no tanque de estabilização foi comprometida, sabendo que as espécies aguentam até ${temperaturaMax}ºC e que esse tanque possui ${volume}L e ${mols} mols desse gás. Qual é a pressão ideal para o tanque?`,
     variavelPorGrupo: {
-      grupo1: { volume: 10000, mols: 5, temperaturaMax: 200 },
-      grupo2: { volume: 12000, mols: 6, temperaturaMax: 210 },
-      grupo3: { volume: 9500, mols: 4.5, temperaturaMax: 195 },
-      grupo4: { volume: 11000, mols: 5.5, temperaturaMax: 205 },
-      grupo5: { volume: 10500, mols: 5.2, temperaturaMax: 215 }
+      grupo1: { volume: 10000, mols: 5, temperaturaMax: 200, respostaCorreta: 12.45 },
+      grupo2: { volume: 5000, mols: 10, temperaturaMax: 100, respostaCorreta: 15.78 },
+      grupo3: { volume: 1000, mols: 2, temperaturaMax: 195, respostaCorreta: 14.92 },
+      grupo4: { volume: 11000, mols: 5.5, temperaturaMax: 205, respostaCorreta: 13.25 },
+      grupo5: { volume: 10500, mols: 5.2, temperaturaMax: 215, respostaCorreta: 13.85 }
     },
     unidade: 'atm',
     animacao: 'termometro',
@@ -34,14 +32,12 @@ const questoesBase = [
     titulo: 'Calibração da Válvula de Compressão',
     texto: ({ pressao, volumeInicial, volumeFinal }) =>
       `Uma determinada válvula de compressão de misturas é responsável pela estabilização da reação química. Para isso, essa mistura que está a ${pressao} atm precisa sofrer uma compressão de ${volumeInicial}L para ${volumeFinal}L. Qual é o trabalho realizado pela máquina e consequentemente a quantidade de energia necessária em J? Lembrando que o trabalho realizado pela máquina e pelo gás são opostos. (Use 1 atm = 101300 Pa)`,
-    formula: ({ pressao, volumeInicial, volumeFinal }) => 
-      -1 * pressao * 101300 * (volumeFinal - volumeInicial) * 0.001, // Convertendo L para m³ e calculando trabalho
     variavelPorGrupo: {
-      grupo1: { pressao: 2, volumeInicial: 24, volumeFinal: 20 },
-      grupo2: { pressao: 2.5, volumeInicial: 26, volumeFinal: 21 },
-      grupo3: { pressao: 1.8, volumeInicial: 22, volumeFinal: 18 },
-      grupo4: { pressao: 2.2, volumeInicial: 25, volumeFinal: 20 },
-      grupo5: { pressao: 1.9, volumeInicial: 23, volumeFinal: 19 }
+      grupo1: { pressao: 2, volumeInicial: 24, volumeFinal: 20, respostaCorreta: 810.40 },
+      grupo2: { pressao: 2.5, volumeInicial: 26, volumeFinal: 21, respostaCorreta: 1266.25 },
+      grupo3: { pressao: 1.8, volumeInicial: 22, volumeFinal: 18, respostaCorreta: 729.36 },
+      grupo4: { pressao: 2.2, volumeInicial: 25, volumeFinal: 20, respostaCorreta: 1114.30 },
+      grupo5: { pressao: 1.9, volumeInicial: 23, volumeFinal: 19, respostaCorreta: 766.88 }
     },
     unidade: 'J',
     animacao: 'pistao',
@@ -57,16 +53,12 @@ const questoesBase = [
     titulo: 'Anomalia Térmica do Novo Espécime',
     texto: ({ mols, temperaturaInicial, pressaoFinal, volumeFinal }) =>
       `Um tanque contendo um novo espécime com uma habilidade única de controlar a velocidade das partículas ao seu redor está atingindo temperaturas fora do esperado. Sabendo que esse tanque possui ${mols} mols de gás, a temperatura original era de ${temperaturaInicial}ºC e ele passou para o estado de P = ${pressaoFinal}Pa, V = ${volumeFinal}m³. Calcule a variação de energia interna que o tanque sofreu para que os sistemas consigam manter a amostra viva em J. (Use R = 8.31 J/(mol·K))`,
-    formula: ({ mols, temperaturaInicial, pressaoFinal, volumeFinal }) => {
-      const temperaturaFinal = (pressaoFinal * volumeFinal) / (mols * 8.31);
-      return (3/2) * mols * 8.31 * (temperaturaFinal - (temperaturaInicial + 273.15));
-    },
     variavelPorGrupo: {
-      grupo1: { mols: 5, temperaturaInicial: 39, pressaoFinal: 50, volumeFinal: 500 },
-      grupo2: { mols: 5.5, temperaturaInicial: 40, pressaoFinal: 55, volumeFinal: 520 },
-      grupo3: { mols: 4.8, temperaturaInicial: 38, pressaoFinal: 48, volumeFinal: 490 },
-      grupo4: { mols: 5.2, temperaturaInicial: 41, pressaoFinal: 52, volumeFinal: 510 },
-      grupo5: { mols: 4.9, temperaturaInicial: 37, pressaoFinal: 49, volumeFinal: 480 }
+      grupo1: { mols: 5, temperaturaInicial: 39, pressaoFinal: 50, volumeFinal: 500, respostaCorreta: 2493.00 },
+      grupo2: { mols: 5.5, temperaturaInicial: 40, pressaoFinal: 55, volumeFinal: 520, respostaCorreta: 2867.45 },
+      grupo3: { mols: 4.8, temperaturaInicial: 38, pressaoFinal: 48, volumeFinal: 490, respostaCorreta: 2285.95 },
+      grupo4: { mols: 5.2, temperaturaInicial: 41, pressaoFinal: 52, volumeFinal: 510, respostaCorreta: 2680.22 },
+      grupo5: { mols: 4.9, temperaturaInicial: 37, pressaoFinal: 49, volumeFinal: 480, respostaCorreta: 2389.48 }
     },
     unidade: 'J',
     animacao: 'sensor',
@@ -82,14 +74,12 @@ const questoesBase = [
     titulo: 'Manutenção da Câmara de Resfriamento',
     texto: ({ mols, variacaoTemperatura }) =>
       `Uma câmara de resfriamento defeituosa não consegue detectar quanto de calor precisa retirar da amostra. Sabendo que se trata de uma câmara isovolumétrica e que a mistura de ${mols} mols ganhou ${variacaoTemperatura}ºC indesejados, qual é a quantidade de calor que deve ser retirada em J? (Use R = 8.31 J/(mol·K) e Cv = 3R/2 para gás monoatômico)`,
-    formula: ({ mols, variacaoTemperatura }) => 
-      (3/2) * mols * 8.31 * variacaoTemperatura,
     variavelPorGrupo: {
-      grupo1: { mols: 3, variacaoTemperatura: 50 },
-      grupo2: { mols: 3.5, variacaoTemperatura: 55 },
-      grupo3: { mols: 2.8, variacaoTemperatura: 48 },
-      grupo4: { mols: 3.2, variacaoTemperatura: 52 },
-      grupo5: { mols: 2.9, variacaoTemperatura: 49 }
+      grupo1: { mols: 3, variacaoTemperatura: 50, respostaCorreta: 1871.48 },
+      grupo2: { mols: 3.5, variacaoTemperatura: 55, respostaCorreta: 2405.77 },
+      grupo3: { mols: 2.8, variacaoTemperatura: 48, respostaCorreta: 1677.65 },
+      grupo4: { mols: 3.2, variacaoTemperatura: 52, respostaCorreta: 2076.91 },
+      grupo5: { mols: 2.9, variacaoTemperatura: 49, respostaCorreta: 1774.56 }
     },
     unidade: 'J',
     animacao: 'valvula',
@@ -112,21 +102,12 @@ const questoesBase = [
         return `Identifique o tipo de transformação onde W = 0, ΔU = ${energiaInterna} J e Q = ${calor} J. Insira o valor correto para completar a equação da primeira lei da termodinâmica (ΔU = Q - W) em J.`;
       }
     },
-    formula: ({ tipo, calor, trabalho, energiaInterna }) => {
-      if (tipo === 'isotermica') {
-        return 0; // ΔU = 0 para transformação isotérmica
-      } else if (tipo === 'adiabatica') {
-        return energiaInterna; // ΔU = W para transformação adiabática (Q = 0)
-      } else if (tipo === 'isovolumetrica') {
-        return energiaInterna; // ΔU = Q para transformação isovolumétrica (W = 0)
-      }
-    },
     variavelPorGrupo: {
-      grupo1: { tipo: 'isotermica', calor: 500, trabalho: 500, energiaInterna: 0 },
-      grupo2: { tipo: 'adiabatica', calor: 0, trabalho: -300, energiaInterna: 300 },
-      grupo3: { tipo: 'isovolumetrica', calor: 400, trabalho: 0, energiaInterna: 400 },
-      grupo4: { tipo: 'isotermica', calor: 600, trabalho: 600, energiaInterna: 0 },
-      grupo5: { tipo: 'adiabatica', calor: 0, trabalho: -350, energiaInterna: 350 }
+      grupo1: { tipo: 'isotermica', calor: 500, trabalho: 500, energiaInterna: 0, respostaCorreta: 0 },
+      grupo2: { tipo: 'adiabatica', calor: 0, trabalho: -300, energiaInterna: 300, respostaCorreta: 300 },
+      grupo3: { tipo: 'isovolumetrica', calor: 400, trabalho: 0, energiaInterna: 400, respostaCorreta: 400 },
+      grupo4: { tipo: 'isotermica', calor: 600, trabalho: 600, energiaInterna: 0, respostaCorreta: 0 },
+      grupo5: { tipo: 'adiabatica', calor: 0, trabalho: -350, energiaInterna: 350, respostaCorreta: 350 }
     },
     unidade: 'J',
     animacao: 'compressor',
@@ -225,20 +206,12 @@ const Game = () => {
     const atual = questoes[progress.currentQuestion];
     if (!atual) return;
 
-    // Log para debugging
-    console.log("Respondendo questão:", progress.currentQuestion + 1);
-    console.log("Grupo:", groupId);
-    console.log("Variáveis:", atual.variaveis);
-    console.log("Fórmula:", atual.formula.toString());
-
-    const correta = Number(atual.formula(atual.variaveis).toFixed(2));
+    // Obtém a resposta correta diretamente das variáveis do grupo
+    const respostaCorreta = atual.variaveis.respostaCorreta;
     const userResposta = Number(parseFloat(resposta).toFixed(2));
 
-    console.log("Resposta correta:", correta);
-    console.log("Resposta do usuário:", userResposta);
-
     // Verifica com tolerância para arredondamentos
-    const acertou = Math.abs(userResposta - correta) < 0.01;
+    const acertou = Math.abs(userResposta - respostaCorreta) < 0.01;
 
     const novasVidas = acertou ? 3 : progress.lives - 1;
     const novaPontuacao = acertou ? progress.score + 1 : progress.score;
