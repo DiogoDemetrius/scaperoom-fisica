@@ -6,117 +6,133 @@ import './Game.css';
 const questoesBase = [
   {
     id: 1,
-    tipo: 'temperatura',
-    contexto: 'Alerta! Câmara de secagem necessita reajuste de pressão. Aplique os parâmetros corretos para estabilização.',
-    titulo: 'Reativação da Câmara de Secagem',
-    texto: ({ pressaoInicial, pressaoFinal, temperaturaInicial }) =>
-      `Para reativar a câmara de secagem, você precisa elevar a pressão de ${pressaoInicial} atm para ${pressaoFinal} atm mantendo o volume constante. Se a temperatura inicial é ${temperaturaInicial} K, calcule a temperatura final em K.`,
-    formula: ({ pressaoInicial, pressaoFinal, temperaturaInicial }) => 
-      (pressaoFinal * temperaturaInicial) / pressaoInicial,
+    tipo: 'pressao',
+    contexto: 'Alerta! Tanque de estabilização comprometido! Calcule a pressão ideal para preservar as espécies.',
+    titulo: 'Estabilização do Tanque de Cultivo',
+    texto: ({ volume, mols, temperaturaMax }) =>
+      `A pressão no tanque de estabilização foi comprometida, sabendo que as espécies aguentam até ${temperaturaMax}ºC e que esse tanque possui ${volume}L e ${mols} mols desse gás. Qual é a pressão ideal para o tanque em atm? (Use R = 0.082 atm·L/(mol·K))`,
+    formula: ({ volume, mols, temperaturaMax }) => 
+      (mols * 0.082 * (temperaturaMax + 273.15)) / (volume / 1000), // Convertendo L para m³ e temperatura para K
     variavelPorGrupo: {
-      grupo1: { pressaoInicial: 2.0, pressaoFinal: 4.0, temperaturaInicial: 300 },
-      grupo2: { pressaoInicial: 1.5, pressaoFinal: 3.0, temperaturaInicial: 350 },
-      grupo3: { pressaoInicial: 2.5, pressaoFinal: 5.0, temperaturaInicial: 320 },
-      grupo4: { pressaoInicial: 3.0, pressaoFinal: 6.0, temperaturaInicial: 280 },
-      grupo5: { pressaoInicial: 1.8, pressaoFinal: 4.5, temperaturaInicial: 310 }
+      grupo1: { volume: 10000, mols: 5, temperaturaMax: 200 },
+      grupo2: { volume: 12000, mols: 6, temperaturaMax: 210 },
+      grupo3: { volume: 9500, mols: 4.5, temperaturaMax: 195 },
+      grupo4: { volume: 11000, mols: 5.5, temperaturaMax: 205 },
+      grupo5: { volume: 10500, mols: 5.2, temperaturaMax: 215 }
     },
-    unidade: 'K',
+    unidade: 'atm',
     animacao: 'termometro',
     feedback: {
-      sucesso: 'Câmara de secagem reativada com sucesso! Pressão estabilizada.',
-      falha: 'Parâmetros incorretos. A câmara continua instável!'
+      sucesso: 'Pressão ideal estabelecida! As espécies estão seguras e o tanque estabilizado.',
+      falha: 'Pressão incorreta! As espécies ainda correm risco no ambiente instável!'
     }
   },
   {
     id: 2,
     tipo: 'trabalho',
-    contexto: 'Sistema de expansão em falha! Calcule o trabalho necessário para liberar vapor no trocador de calor.',
-    titulo: 'Expansão do Gás no Trocador',
-    texto: ({ volume, temperatura, pressaoExterna }) =>
-      `Uma expansão isotérmica de ${volume} L a ${temperatura} K ocorre contra uma pressão externa de ${pressaoExterna} atm. Qual o trabalho realizado pelo gás em J? (Use 1 atm = 101300 Pa)`,
-    formula: ({ volume, pressaoExterna }) => 
-      -1 * pressaoExterna * 101300 * volume * 0.001, // Convertendo L para m³ e atm para Pa
+    contexto: 'Falha na válvula de compressão! Determine a energia necessária para estabilizar a reação química.',
+    titulo: 'Calibração da Válvula de Compressão',
+    texto: ({ pressao, volumeInicial, volumeFinal }) =>
+      `Uma determinada válvula de compressão de misturas é responsável pela estabilização da reação química. Para isso, essa mistura que está a ${pressao} atm precisa sofrer uma compressão de ${volumeInicial}L para ${volumeFinal}L. Qual é o trabalho realizado pela máquina e consequentemente a quantidade de energia necessária em J? Lembrando que o trabalho realizado pela máquina e pelo gás são opostos. (Use 1 atm = 101300 Pa)`,
+    formula: ({ pressao, volumeInicial, volumeFinal }) => 
+      -1 * pressao * 101300 * (volumeFinal - volumeInicial) * 0.001, // Convertendo L para m³ e calculando trabalho
     variavelPorGrupo: {
-      grupo1: { volume: 5.0, temperatura: 300, pressaoExterna: 1.5 },
-      grupo2: { volume: 6.0, temperatura: 310, pressaoExterna: 1.8 },
-      grupo3: { volume: 4.5, temperatura: 290, pressaoExterna: 1.2 },
-      grupo4: { volume: 5.5, temperatura: 320, pressaoExterna: 2.0 },
-      grupo5: { volume: 4.0, temperatura: 305, pressaoExterna: 1.7 }
+      grupo1: { pressao: 2, volumeInicial: 24, volumeFinal: 20 },
+      grupo2: { pressao: 2.5, volumeInicial: 26, volumeFinal: 21 },
+      grupo3: { pressao: 1.8, volumeInicial: 22, volumeFinal: 18 },
+      grupo4: { pressao: 2.2, volumeInicial: 25, volumeFinal: 20 },
+      grupo5: { pressao: 1.9, volumeInicial: 23, volumeFinal: 19 }
     },
     unidade: 'J',
     animacao: 'pistao',
     feedback: {
-      sucesso: 'Pistão ativado! Vapor liberado no trocador de calor com sucesso.',
-      falha: 'Falha no cálculo do trabalho! O pistão não atingiu a posição ideal.'
+      sucesso: 'Válvula calibrada com sucesso! Reação química estabilizada.',
+      falha: 'Energia insuficiente! A válvula continua comprometida.'
     }
   },
   {
     id: 3,
     tipo: 'energia',
-    contexto: 'Sensores descalibrados! Calcule a energia interna para sincronizar o sistema de refrigeração.',
-    titulo: 'Calibração dos Sensores Criogênicos',
-    texto: ({ temperatura, mols }) =>
-      `A energia interna de ${mols} mol de gás monoatômico a ${temperatura} K é requerida para calibrar sensores. Calcule U em J. (Use R = 8.31 J/(mol·K))`,
-    formula: ({ temperatura, mols }) => 
-      (3/2) * mols * 8.31 * temperatura,
+    contexto: 'Anomalia térmica detectada! Espécime causando flutuações de temperatura. Calcule a variação de energia interna.',
+    titulo: 'Anomalia Térmica do Novo Espécime',
+    texto: ({ mols, temperaturaInicial, pressaoFinal, volumeFinal }) =>
+      `Um tanque contendo um novo espécime com uma habilidade única de controlar a velocidade das partículas ao seu redor está atingindo temperaturas fora do esperado. Sabendo que esse tanque possui ${mols} mols de gás, a temperatura original era de ${temperaturaInicial}ºC e ele passou para o estado de P = ${pressaoFinal}Pa, V = ${volumeFinal}m³. Calcule a variação de energia interna que o tanque sofreu para que os sistemas consigam manter a amostra viva em J. (Use R = 8.31 J/(mol·K))`,
+    formula: ({ mols, temperaturaInicial, pressaoFinal, volumeFinal }) => {
+      const temperaturaFinal = (pressaoFinal * volumeFinal) / (mols * 8.31);
+      return (3/2) * mols * 8.31 * (temperaturaFinal - (temperaturaInicial + 273.15));
+    },
     variavelPorGrupo: {
-      grupo1: { temperatura: 400, mols: 1 },
-      grupo2: { temperatura: 450, mols: 1.2 },
-      grupo3: { temperatura: 380, mols: 0.9 },
-      grupo4: { temperatura: 420, mols: 1.5 },
-      grupo5: { temperatura: 390, mols: 1.1 }
+      grupo1: { mols: 5, temperaturaInicial: 39, pressaoFinal: 50, volumeFinal: 500 },
+      grupo2: { mols: 5.5, temperaturaInicial: 40, pressaoFinal: 55, volumeFinal: 520 },
+      grupo3: { mols: 4.8, temperaturaInicial: 38, pressaoFinal: 48, volumeFinal: 490 },
+      grupo4: { mols: 5.2, temperaturaInicial: 41, pressaoFinal: 52, volumeFinal: 510 },
+      grupo5: { mols: 4.9, temperaturaInicial: 37, pressaoFinal: 49, volumeFinal: 480 }
     },
     unidade: 'J',
     animacao: 'sensor',
     feedback: {
-      sucesso: 'Sistema de refrigeração sincronizado! Sensores operando normalmente.',
-      falha: 'Falha na calibração! Sensores continuam descalibrados.'
+      sucesso: 'Variação de energia calculada corretamente! Sistemas de contenção ajustados.',
+      falha: 'Cálculo incorreto! A amostra continua instável e afetando os sistemas.'
     }
   },
   {
     id: 4,
-    tipo: 'primeira-lei',
-    contexto: 'Instabilidade térmica detectada! Determine a variação da energia interna para ativar o protocolo correto.',
-    titulo: 'Estabilização Térmica da Câmara',
-    texto: ({ calor, trabalho }) =>
-      `Para resfriar a câmara, foram fornecidos ${calor} J de calor e o gás realizou ${trabalho} J de trabalho. Qual a variação de energia interna (ΔU) em J?`,
-    formula: ({ calor, trabalho }) => 
-      calor - trabalho,
+    tipo: 'calor',
+    contexto: 'Câmara de resfriamento defeituosa! Calcule o calor a ser removido para evitar dano às amostras.',
+    titulo: 'Manutenção da Câmara de Resfriamento',
+    texto: ({ mols, variacaoTemperatura }) =>
+      `Uma câmara de resfriamento defeituosa não consegue detectar quanto de calor precisa retirar da amostra. Sabendo que se trata de uma câmara isovolumétrica e que a mistura de ${mols} mols ganhou ${variacaoTemperatura}ºC indesejados, qual é a quantidade de calor que deve ser retirada em J? (Use R = 8.31 J/(mol·K) e Cv = 3R/2 para gás monoatômico)`,
+    formula: ({ mols, variacaoTemperatura }) => 
+      (3/2) * mols * 8.31 * variacaoTemperatura,
     variavelPorGrupo: {
-      grupo1: { calor: 200, trabalho: 50 },
-      grupo2: { calor: 250, trabalho: 80 },
-      grupo3: { calor: 180, trabalho: 40 },
-      grupo4: { calor: 220, trabalho: 70 },
-      grupo5: { calor: 190, trabalho: 60 }
+      grupo1: { mols: 3, variacaoTemperatura: 50 },
+      grupo2: { mols: 3.5, variacaoTemperatura: 55 },
+      grupo3: { mols: 2.8, variacaoTemperatura: 48 },
+      grupo4: { mols: 3.2, variacaoTemperatura: 52 },
+      grupo5: { mols: 2.9, variacaoTemperatura: 49 }
     },
     unidade: 'J',
     animacao: 'valvula',
     feedback: {
-      sucesso: 'Protocolo de estabilização ativado com sucesso! Temperatura normalizada.',
-      falha: 'Protocolo incorreto! A câmara continua com instabilidade térmica.'
+      sucesso: 'Calor removido com sucesso! Câmara de resfriamento operando normalmente.',
+      falha: 'Cálculo incorreto! A câmara continua superaquecendo.'
     }
   },
   {
     id: 5,
     tipo: 'transformacao',
-    contexto: 'Módulos de estabilização em espera! Calcule o trabalho na transformação isobárica para ativar o compressor principal.',
-    titulo: 'Ativação dos Módulos de Estabilização',
-    texto: ({ pressao, volumeInicial, volumeFinal }) =>
-      `Em uma transformação isobárica a ${pressao} atm, um gás expande de ${volumeInicial} L para ${volumeFinal} L. Qual o trabalho realizado pelo gás em J? (Use 1 atm = 101300 Pa)`,
-    formula: ({ pressao, volumeInicial, volumeFinal }) => 
-      pressao * 101300 * (volumeFinal - volumeInicial) * 0.001, // Convertendo L para m³ e atm para Pa
+    contexto: 'Sistema de transformação termodinâmica crítico! Identifique o processo e aplique a primeira lei corretamente.',
+    titulo: 'Análise de Transformação Termodinâmica',
+    texto: ({ tipo, calor, trabalho, energiaInterna }) => {
+      if (tipo === 'isotermica') {
+        return `Identifique o tipo de transformação onde ΔU = 0, Q = ${calor} J e W = ${trabalho} J. Insira o valor correto para completar a equação da primeira lei da termodinâmica (ΔU = Q - W) em J.`;
+      } else if (tipo === 'adiabatica') {
+        return `Identifique o tipo de transformação onde Q = 0, ΔU = ${energiaInterna} J e W = ${trabalho} J. Insira o valor correto para completar a equação da primeira lei da termodinâmica (ΔU = Q - W) em J.`;
+      } else if (tipo === 'isovolumetrica') {
+        return `Identifique o tipo de transformação onde W = 0, ΔU = ${energiaInterna} J e Q = ${calor} J. Insira o valor correto para completar a equação da primeira lei da termodinâmica (ΔU = Q - W) em J.`;
+      }
+    },
+    formula: ({ tipo, calor, trabalho, energiaInterna }) => {
+      if (tipo === 'isotermica') {
+        return 0; // ΔU = 0 para transformação isotérmica
+      } else if (tipo === 'adiabatica') {
+        return energiaInterna; // ΔU = W para transformação adiabática (Q = 0)
+      } else if (tipo === 'isovolumetrica') {
+        return energiaInterna; // ΔU = Q para transformação isovolumétrica (W = 0)
+      }
+    },
     variavelPorGrupo: {
-      grupo1: { pressao: 2.0, volumeInicial: 3.0, volumeFinal: 5.0 },
-      grupo2: { pressao: 2.5, volumeInicial: 2.5, volumeFinal: 4.0 },
-      grupo3: { pressao: 1.8, volumeInicial: 3.5, volumeFinal: 6.0 },
-      grupo4: { pressao: 2.2, volumeInicial: 2.8, volumeFinal: 4.5 },
-      grupo5: { pressao: 1.5, volumeInicial: 4.0, volumeFinal: 7.0 }
+      grupo1: { tipo: 'isotermica', calor: 500, trabalho: 500, energiaInterna: 0 },
+      grupo2: { tipo: 'adiabatica', calor: 0, trabalho: -300, energiaInterna: 300 },
+      grupo3: { tipo: 'isovolumetrica', calor: 400, trabalho: 0, energiaInterna: 400 },
+      grupo4: { tipo: 'isotermica', calor: 600, trabalho: 600, energiaInterna: 0 },
+      grupo5: { tipo: 'adiabatica', calor: 0, trabalho: -350, energiaInterna: 350 }
     },
     unidade: 'J',
     animacao: 'compressor',
     feedback: {
-      sucesso: 'Compressor principal ativado! Módulos de estabilização operacionais.',
-      falha: 'Compressor em estado crítico! Recalcule os parâmetros imediatamente.'
+      sucesso: 'Análise termodinâmica correta! Sistema estabilizado.',
+      falha: 'Análise incorreta! O sistema continua em estado crítico.'
     }
   }
 ];
