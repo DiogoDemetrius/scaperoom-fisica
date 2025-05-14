@@ -18,7 +18,7 @@ const questoesBase = [
       grupo4: { volume: 20000, mols: 5, temperaturaMax: 300, respostaCorreta: 1085 },
       grupo5: { volume: 2500, mols: 1, temperaturaMax: 20, respostaCorreta: 973 }
     },
-    unidade: 'atm',
+    unidade: 'Pa',
     animacao: 'termometro',
     feedback: {
       sucesso: 'Pressão ideal estabelecida! As espécies estão seguras e o tanque estabilizado.',
@@ -75,11 +75,11 @@ const questoesBase = [
     texto: ({ mols, variacaoTemperatura }) =>
       `Uma câmara de resfriamento defeituosa não consegue detectar quanto de calor precisa retirar da amostra. Sabendo que se trata de uma câmara isovolumétrica e que a mistura de ${mols} mols ganhou ${variacaoTemperatura} indesejados, qual é a quantidade de calor que deve ser retirada em J?`,
     variavelPorGrupo: {
-      grupo1: { mols: 2, variacaoTemperatura: "50ºC", respostaCorreta: 5362 },
-      grupo2: { mols: 4, variacaoTemperatura: "30ºF", respostaCorreta: 10060 },
-      grupo3: { mols: 7, variacaoTemperatura: "10ºF", respostaCorreta: 16442 },
-      grupo4: { mols: 1, variacaoTemperatura: "75ºF", respostaCorreta: 2888 },
-      grupo5: { mols: 5, variacaoTemperatura: "20ºF", respostaCorreta: 7296 }
+      grupo1: { mols: 2, variacaoTemperatura: "50ºC", respostaCorreta: 8043 },
+      grupo2: { mols: 4, variacaoTemperatura: "30ºF", respostaCorreta: 15089 },
+      grupo3: { mols: 7, variacaoTemperatura: "10ºF", respostaCorreta: 24663 },
+      grupo4: { mols: 1, variacaoTemperatura: "75ºF", respostaCorreta: 4333 },
+      grupo5: { mols: 5, variacaoTemperatura: "20ºF", respostaCorreta: 10943 }
     },
     unidade: 'J',
     animacao: 'valvula',
