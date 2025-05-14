@@ -95,11 +95,11 @@ const questoesBase = [
     titulo: 'Análise de Transformação Termodinâmica',
     texto: () => '5- Descubra qual o tipo de transformação abaixo e insira corretamente a primeira lei da termodinâmica para uma transformação',
     variavelPorGrupo: {
-      grupo1: { respostaCorreta: "Q = W" },
-      grupo2: { respostaCorreta: "Q = (Uf - Ui)" },
-      grupo3: { respostaCorreta: "Q = (Uf - Ui) + W" },
-      grupo4: { respostaCorreta: "(Uf - Ui) = - W" },
-      grupo5: { respostaCorreta: "Q = W" }
+      grupo1: { respostaCorreta: "q=w" },
+      grupo2: { respostaCorreta: "q=(uf-ui)" },
+      grupo3: { respostaCorreta: "q=(uf-ui)+w" },
+      grupo4: { respostaCorreta: "(uf-ui)=-w" },
+      grupo5: { respostaCorreta: "q=w" }
     },
     unidade: 'J',
     animacao: 'compressor',
@@ -481,7 +481,15 @@ const Game = () => {
                   step={atual.id === 5 ? undefined : "0.01"}
                   placeholder={`Resposta em ${atual.unidade}`}
                   value={resposta}
-                  onChange={(e) => setResposta(e.target.value)}
+                  onChange={(e) => {
+                    if (atual.id === 5) {
+                      // Normaliza a resposta removendo espaços e convertendo para minúsculas
+                      const normalizedValue = e.target.value.toLowerCase().replace(/\s+/g, '');
+                      setResposta(normalizedValue);
+                    } else {
+                      setResposta(e.target.value);
+                    }
+                  }}
                   required
                 />
                 <span className="input-unit">{atual.unidade}</span>
