@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Game.css';
 
-// Definição das questões termodinâmicas
-const questoes = [
+// Definição das questões termodinâmicas com variáveis que serão substituídas por grupo
+const questoesBase = [
   {
     id: 1,
     tipo: 'temperatura',
@@ -13,7 +13,13 @@ const questoes = [
       `Para reativar a câmara de secagem, você precisa elevar a pressão de ${pressaoInicial} atm para ${pressaoFinal} atm mantendo o volume constante. Se a temperatura inicial é ${temperaturaInicial} K, calcule a temperatura final em K.`,
     formula: ({ pressaoInicial, pressaoFinal, temperaturaInicial }) => 
       (pressaoFinal * temperaturaInicial) / pressaoInicial,
-    variaveis: { pressaoInicial: 2.0, pressaoFinal: 4.0, temperaturaInicial: 300 },
+    variavelPorGrupo: {
+      grupo1: { pressaoInicial: 2.0, pressaoFinal: 4.0, temperaturaInicial: 300 },
+      grupo2: { pressaoInicial: 1.5, pressaoFinal: 3.0, temperaturaInicial: 350 },
+      grupo3: { pressaoInicial: 2.5, pressaoFinal: 5.0, temperaturaInicial: 320 },
+      grupo4: { pressaoInicial: 3.0, pressaoFinal: 6.0, temperaturaInicial: 280 },
+      grupo5: { pressaoInicial: 1.8, pressaoFinal: 4.5, temperaturaInicial: 310 }
+    },
     unidade: 'K',
     animacao: 'termometro',
     feedback: {
@@ -30,7 +36,13 @@ const questoes = [
       `Uma expansão isotérmica de ${volume} L a ${temperatura} K ocorre contra uma pressão externa de ${pressaoExterna} atm. Qual o trabalho realizado pelo gás em J? (Use 1 atm = 101300 Pa)`,
     formula: ({ volume, pressaoExterna }) => 
       -1 * pressaoExterna * 101300 * volume * 0.001, // Convertendo L para m³ e atm para Pa
-    variaveis: { volume: 5.0, temperatura: 300, pressaoExterna: 1.5 },
+    variavelPorGrupo: {
+      grupo1: { volume: 5.0, temperatura: 300, pressaoExterna: 1.5 },
+      grupo2: { volume: 6.0, temperatura: 310, pressaoExterna: 1.8 },
+      grupo3: { volume: 4.5, temperatura: 290, pressaoExterna: 1.2 },
+      grupo4: { volume: 5.5, temperatura: 320, pressaoExterna: 2.0 },
+      grupo5: { volume: 4.0, temperatura: 305, pressaoExterna: 1.7 }
+    },
     unidade: 'J',
     animacao: 'pistao',
     feedback: {
@@ -47,7 +59,13 @@ const questoes = [
       `A energia interna de ${mols} mol de gás monoatômico a ${temperatura} K é requerida para calibrar sensores. Calcule U em J. (Use R = 8.31 J/(mol·K))`,
     formula: ({ temperatura, mols }) => 
       (3/2) * mols * 8.31 * temperatura,
-    variaveis: { temperatura: 400, mols: 1 },
+    variavelPorGrupo: {
+      grupo1: { temperatura: 400, mols: 1 },
+      grupo2: { temperatura: 450, mols: 1.2 },
+      grupo3: { temperatura: 380, mols: 0.9 },
+      grupo4: { temperatura: 420, mols: 1.5 },
+      grupo5: { temperatura: 390, mols: 1.1 }
+    },
     unidade: 'J',
     animacao: 'sensor',
     feedback: {
@@ -64,7 +82,13 @@ const questoes = [
       `Para resfriar a câmara, foram fornecidos ${calor} J de calor e o gás realizou ${trabalho} J de trabalho. Qual a variação de energia interna (ΔU) em J?`,
     formula: ({ calor, trabalho }) => 
       calor - trabalho,
-    variaveis: { calor: 200, trabalho: 50 },
+    variavelPorGrupo: {
+      grupo1: { calor: 200, trabalho: 50 },
+      grupo2: { calor: 250, trabalho: 80 },
+      grupo3: { calor: 180, trabalho: 40 },
+      grupo4: { calor: 220, trabalho: 70 },
+      grupo5: { calor: 190, trabalho: 60 }
+    },
     unidade: 'J',
     animacao: 'valvula',
     feedback: {
@@ -81,7 +105,13 @@ const questoes = [
       `Em uma transformação isobárica a ${pressao} atm, um gás expande de ${volumeInicial} L para ${volumeFinal} L. Qual o trabalho realizado pelo gás em J? (Use 1 atm = 101300 Pa)`,
     formula: ({ pressao, volumeInicial, volumeFinal }) => 
       pressao * 101300 * (volumeFinal - volumeInicial) * 0.001, // Convertendo L para m³ e atm para Pa
-    variaveis: { pressao: 2.0, volumeInicial: 3.0, volumeFinal: 5.0 },
+    variavelPorGrupo: {
+      grupo1: { pressao: 2.0, volumeInicial: 3.0, volumeFinal: 5.0 },
+      grupo2: { pressao: 2.5, volumeInicial: 2.5, volumeFinal: 4.0 },
+      grupo3: { pressao: 1.8, volumeInicial: 3.5, volumeFinal: 6.0 },
+      grupo4: { pressao: 2.2, volumeInicial: 2.8, volumeFinal: 4.5 },
+      grupo5: { pressao: 1.5, volumeInicial: 4.0, volumeFinal: 7.0 }
+    },
     unidade: 'J',
     animacao: 'compressor',
     feedback: {
@@ -91,7 +121,7 @@ const questoes = [
   }
 ];
 
-const totalQuestoes = questoes.length;
+const totalQuestoes = questoesBase.length;
 
 const Game = () => {
   const [progress, setProgress] = useState(null);
@@ -99,97 +129,142 @@ const Game = () => {
   const [feedback, setFeedback] = useState('');
   const [showIntro, setShowIntro] = useState(true);
   const [animState, setAnimState] = useState('idle');
+  const [questoes, setQuestoes] = useState([]);
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
-  const groupName = token ? JSON.parse(atob(token.split('.')[1])).group.toUpperCase() : 'AGENTES-THERMO';
-
-useEffect(() => {
-  const fetchProgress = async () => {
-    try {
-      // Requisição para o backend
-      const res = await fetch('https://homologacao-fis-scaperoom.vercel.app/api/game/progress', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (!res.ok) {
-        throw new Error('Erro ao carregar progresso');
-      }
-
-      const data = await res.json();
-      setProgress({
-        ...data,
-        lives: 3 // Inicia com 3 vidas para cada questão
-      });
-    } catch (err) {
-      alert('Erro ao carregar progresso');
+  const tokenData = token ? JSON.parse(atob(token.split('.')[1])) : {};
+  const groupName = token ? tokenData.group.toUpperCase() : 'AGENTES-THERMO';
+  
+  // Normaliza o nome do grupo para corresponder às chaves em variavelPorGrupo
+  const getGroupId = (group) => {
+    // Extrai apenas os dígitos do nome do grupo
+    const groupNumber = group.match(/\d+/);
+    if (groupNumber) {
+      return `grupo${groupNumber[0]}`;
     }
+    return 'grupo1'; // Grupo padrão
   };
+  
+  const groupId = token ? getGroupId(tokenData.group) : 'grupo1';
 
-  setTimeout(() => {
-    fetchProgress();
-  }, 3000); // Tempo para mostrar a introdução
-}, [token]);
+  // Efeito para configurar as questões com base no grupo do usuário
+  useEffect(() => {
+    if (token) {
+      console.log("Grupo identificado:", groupId); // Log para debugging
+      
+      // Configura as questões com as variáveis específicas do grupo
+      const questoesConfiguradas = questoesBase.map(questao => {
+        // Se o grupo existe nas variáveis, usa as do grupo, senão usa grupo1 como padrão
+        const variaveis = questao.variavelPorGrupo[groupId] || questao.variavelPorGrupo.grupo1;
+        
+        console.log(`Questão ${questao.id} para ${groupId}:`, variaveis); // Log para debugging
+        
+        return {
+          ...questao,
+          variaveis: variaveis
+        };
+      });
+      
+      setQuestoes(questoesConfiguradas);
+    }
+  }, [token, groupId]);
 
-// Redireciona para o ranking se tiver terminado
-useEffect(() => {
-  if (progress && progress.currentQuestion >= totalQuestoes) {
-    navigate('/ranking');
-  }
-}, [progress, navigate]);
+  useEffect(() => {
+    const fetchProgress = async () => {
+      try {
+        // Requisição para o backend
+        const res = await fetch('https://homologacao-fis-scaperoom.vercel.app/api/game/progress', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
 
-const handleResponder = async (e) => {
-  e.preventDefault();
-  const atual = questoes[progress.currentQuestion];
-  if (!atual) return;
+        if (!res.ok) {
+          throw new Error('Erro ao carregar progresso');
+        }
 
-  const correta = Number(atual.formula(atual.variaveis).toFixed(2));
-  const userResposta = Number(parseFloat(resposta).toFixed(2));
-
-  // Verifica com tolerância para arredondamentos
-  const acertou = Math.abs(userResposta - correta) < 0.01;
-
-  const novasVidas = acertou ? 3 : progress.lives - 1;
-  const novaPontuacao = acertou ? progress.score + 1 : progress.score;
-  const novaQuestao = acertou || novasVidas <= 0 ? progress.currentQuestion + 1 : progress.currentQuestion;
-
-  // Atualiza animação
-  setAnimState(acertou ? 'success' : 'error');
-
-  // Tempo para mostrar a animação
-  setTimeout(async () => {
-    const atualizado = {
-      ...progress,
-      currentQuestion: novaQuestao,
-      score: novaPontuacao,
-      lives: novasVidas > 0 ? novasVidas : 3 // Reseta vidas ao avançar
+        const data = await res.json();
+        setProgress({
+          ...data,
+          lives: 3 // Inicia com 3 vidas para cada questão
+        });
+      } catch (err) {
+        alert('Erro ao carregar progresso');
+      }
     };
 
-    try {
-      // Requisição para atualizar o progresso no backend
-      const res = await fetch('https://homologacao-fis-scaperoom.vercel.app/api/game/progress', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(atualizado)
-      });
+    setTimeout(() => {
+      fetchProgress();
+    }, 3000); // Tempo para mostrar a introdução
+  }, [token]);
 
-      if (!res.ok) {
-        throw new Error('Erro ao atualizar progresso');
-      }
-
-      const data = await res.json();
-      setProgress(data);
-      setFeedback(acertou ? atual.feedback.sucesso : atual.feedback.falha);
-      setResposta('');
-      setAnimState('idle');
-    } catch (err) {
-      alert('Erro ao atualizar progresso');
+  // Redireciona para o ranking se tiver terminado
+  useEffect(() => {
+    if (progress && progress.currentQuestion >= totalQuestoes) {
+      navigate('/ranking');
     }
-  }, 1500);
-};
+  }, [progress, navigate]);
+
+  const handleResponder = async (e) => {
+    e.preventDefault();
+    const atual = questoes[progress.currentQuestion];
+    if (!atual) return;
+
+    // Log para debugging
+    console.log("Respondendo questão:", progress.currentQuestion + 1);
+    console.log("Grupo:", groupId);
+    console.log("Variáveis:", atual.variaveis);
+    console.log("Fórmula:", atual.formula.toString());
+
+    const correta = Number(atual.formula(atual.variaveis).toFixed(2));
+    const userResposta = Number(parseFloat(resposta).toFixed(2));
+
+    console.log("Resposta correta:", correta);
+    console.log("Resposta do usuário:", userResposta);
+
+    // Verifica com tolerância para arredondamentos
+    const acertou = Math.abs(userResposta - correta) < 0.01;
+
+    const novasVidas = acertou ? 3 : progress.lives - 1;
+    const novaPontuacao = acertou ? progress.score + 1 : progress.score;
+    const novaQuestao = acertou || novasVidas <= 0 ? progress.currentQuestion + 1 : progress.currentQuestion;
+
+    // Atualiza animação
+    setAnimState(acertou ? 'success' : 'error');
+
+    // Tempo para mostrar a animação
+    setTimeout(async () => {
+      const atualizado = {
+        ...progress,
+        currentQuestion: novaQuestao,
+        score: novaPontuacao,
+        lives: novasVidas > 0 ? novasVidas : 3 // Reseta vidas ao avançar
+      };
+
+      try {
+        // Requisição para atualizar o progresso no backend
+        const res = await fetch('https://homologacao-fis-scaperoom.vercel.app/api/game/progress', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(atualizado)
+        });
+
+        if (!res.ok) {
+          throw new Error('Erro ao atualizar progresso');
+        }
+
+        const data = await res.json();
+        setProgress(data);
+        setFeedback(acertou ? atual.feedback.sucesso : atual.feedback.falha);
+        setResposta('');
+        setAnimState('idle');
+      } catch (err) {
+        alert('Erro ao atualizar progresso');
+      }
+    }, 1500);
+  };
 
   // Renderiza a animação específica para cada tipo de questão
   const renderAnimacao = (tipo, estado) => {
@@ -294,7 +369,7 @@ const handleResponder = async (e) => {
     );
   }
 
-  if (!progress) {
+  if (!progress || questoes.length === 0) {
     return (
       <div className="page-container">
         <div className="loading-container">
