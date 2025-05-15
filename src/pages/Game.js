@@ -10,7 +10,7 @@ const questoesBase = [
     contexto: 'Alerta! Tanque de estabilização comprometido! Calcule a pressão ideal para preservar as espécies.',
     titulo: 'Estabilização do Tanque de Cultivo',
     texto: ({ volume, mols, temperaturaMax }) =>
-      `A pressão no tanque de estabilização foi comprometida, sabendo que as espécies aguentam até ${temperaturaMax}ºC e que esse tanque possui ${volume}L e ${mols} mols desse gás. Qual é a pressão ideal para o tanque?`,
+      `Qual é a pressão ideal para o tanque?`,
     variavelPorGrupo: {
       grupo1: { volume: 10000, mols: 5, temperaturaMax: 200, respostaCorreta: 1963 },
       grupo2: { volume: 5000, mols: 10, temperaturaMax: 100, respostaCorreta: 6192 },
@@ -31,7 +31,7 @@ const questoesBase = [
     contexto: 'Falha na válvula de compressão! Determine a energia necessária para estabilizar a reação química.',
     titulo: 'Calibração da Válvula de Compressão',
     texto: ({ pressao, volumeInicial, volumeFinal }) =>
-      `Uma determinada válvula de compressão de misturas é responsável pela estabilização da reação química. Para isso, essa mistura que está a ${pressao} atm precisa sofrer uma compressão de ${volumeInicial}L para ${volumeFinal}L. Qual é o trabalho realizado pela máquina e consequentemente a quantidade de energia necessária? Lembrando que o trabalho realizado pela máquina e pelo gás são opostos.`,
+      `Qual é o trabalho realizado pela máquina?`,
     variavelPorGrupo: {
       grupo1: { pressao: 2, volumeInicial: 24, volumeFinal: 20, respostaCorreta: 800 },
       grupo2: { pressao: 5, volumeInicial: 25, volumeFinal: 20, respostaCorreta: 2500 },
@@ -52,7 +52,7 @@ const questoesBase = [
     contexto: 'Anomalia térmica detectada! Espécime causando flutuações de temperatura. Calcule a variação de energia interna.',
     titulo: 'Anomalia Térmica do Novo Espécime',
     texto: ({ mols, temperaturaInicial, pressaoFinal, volumeFinal }) =>
-      `Um tanque contendo um novo espécime com uma habilidade única de controlar a velocidade das partículas ao seu redor está atingindo temperaturas fora do esperado. Sabendo que esse tanque possui ${mols} mols de gás, a temperatura original era de ${temperaturaInicial}ºC e ele passou para o estado de P = ${pressaoFinal}Pa, V = ${volumeFinal}m³. Calcule a variação de energia interna que o tanque sofreu para que os sistemas consigam manter a amostra viva em J.`,
+      `Qual é a variação de energia interna?`,
     variavelPorGrupo: {
       grupo1: { mols: 5, temperaturaInicial: 30, pressaoFinal: 50, volumeFinal: 500, respostaCorreta: 18638 },
       grupo2: { mols: 5, temperaturaInicial: 33, pressaoFinal: 60, volumeFinal: 250, respostaCorreta: 3078 },
@@ -73,7 +73,7 @@ const questoesBase = [
     contexto: 'Câmara de resfriamento defeituosa! Calcule o calor a ser removido para evitar dano às amostras.',
     titulo: 'Manutenção da Câmara de Resfriamento',
     texto: ({ mols, variacaoTemperatura }) =>
-      `Uma câmara de resfriamento defeituosa não consegue detectar quanto de calor precisa retirar da amostra. Sabendo que se trata de uma câmara isovolumétrica e que a mistura de ${mols} mols ganhou ${variacaoTemperatura} indesejados, qual é a quantidade de calor que deve ser retirada em J?`,
+      `Qual a quantidade de calor que precisa ser retirada da amostra?`,
     variavelPorGrupo: {
       grupo1: { mols: 2, variacaoTemperatura: "50ºC", respostaCorreta: 8043 },
       grupo2: { mols: 4, variacaoTemperatura: "30ºF", respostaCorreta: 15089 },
@@ -93,7 +93,7 @@ const questoesBase = [
     tipo: 'transformacao',
     contexto: 'Sistema de transformação termodinâmica crítico! Identifique o processo e aplique a primeira lei corretamente.',
     titulo: 'Análise de Transformação Termodinâmica',
-    texto: () => '5- Descubra qual o tipo de transformação abaixo e insira corretamente a primeira lei da termodinâmica para uma transformação',
+    texto: () => 'Qual é a expressão da primeira lei da termodinâmica para essa transformação?',
     variavelPorGrupo: {
       grupo1: { respostaCorreta: "q=w" },
       grupo2: { respostaCorreta: "q=(uf-ui)" },
