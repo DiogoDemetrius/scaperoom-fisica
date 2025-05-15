@@ -172,10 +172,8 @@ const Game = () => {
         }
 
         const data = await res.json();
-        setProgress({
-          ...data,
-          lives: 3 // Inicia com 3 vidas para cada questão
-        });
+        // Não reseta as vidas ao carregar, mantém o estado do backend
+        setProgress(data);
       } catch (err) {
         alert('Erro ao carregar progresso');
       }
@@ -217,7 +215,7 @@ const Game = () => {
           ...progress,
           currentQuestion: novaQuestao,
           score: novaPontuacao,
-          lives: novasVidas > 0 ? novasVidas : 3 // Reseta vidas ao avançar
+          lives: acertou || novasVidas <= 0 ? 3 : novasVidas // Reseta para 3 se acertou ou se acabaram as vidas
         };
 
         try {
@@ -236,7 +234,10 @@ const Game = () => {
           }
 
           const data = await res.json();
-          setProgress(data);
+          setProgress({
+            ...data,
+            lives: data.currentQuestion === progress?.currentQuestion ? progress.lives : 3 // Mantém as vidas atuais se estiver na mesma questão, senão reseta para 3
+          });
           setFeedback(acertou ? atual.feedback.sucesso : atual.feedback.falha);
           setResposta('');
           setAnimState('idle');
@@ -267,7 +268,7 @@ const Game = () => {
         ...progress,
         currentQuestion: novaQuestao,
         score: novaPontuacao,
-        lives: novasVidas > 0 ? novasVidas : 3 // Reseta vidas ao avançar
+        lives: acertou || novasVidas <= 0 ? 3 : novasVidas // Reseta para 3 se acertou ou se acabaram as vidas
       };
 
       try {
@@ -286,7 +287,10 @@ const Game = () => {
         }
 
         const data = await res.json();
-        setProgress(data);
+        setProgress({
+          ...data,
+          lives: data.currentQuestion === progress?.currentQuestion ? progress.lives : 3 // Mantém as vidas atuais se estiver na mesma questão, senão reseta para 3
+        });
         setFeedback(acertou ? atual.feedback.sucesso : atual.feedback.falha);
         setResposta('');
         setAnimState('idle');
