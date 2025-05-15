@@ -25,29 +25,30 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="particles-background">
-        {Array(20).fill().map((_, i) => (
+        {Array(10).fill().map((_, i) => (
           <div key={i} className="particle"></div>
         ))}
       </div>
       
-      <div className="home-centered">
+      <main className="home-centered">
         <div className="home-content-centered">
-          <div className="logo-container">
+          <header className="logo-container">
             <div className="logo-icon">🔐</div>
-          </div>
+          </header>
           
           <h1 className="home-title">
-            {animatedText}<span className="cursor">|</span>
+            <span className="title-text">{animatedText}</span>
+            <span className="cursor">|</span>
           </h1>
           
           <p className="home-subtitle">
             Resolva desafios, avance por enigmas e mostre que seu grupo é o melhor!
           </p>
           
-          <div className="card-container">
+          <section className="card-container">
             <div className="home-rules">
               <h3><span className="rule-icon">🧠</span> Como funciona:</h3>
-              <ul>
+              <ul className="rules-list">
                 <li className="rule-item">
                   <span className="rule-emoji">✅</span>
                   <span className="rule-text">Cada grupo terá <strong>3 vidas</strong> por questão.</span>
@@ -70,19 +71,19 @@ const Home = () => {
                 </li>
               </ul>
             </div>
-          </div>
+          </section>
           
-          <button 
-            className="start-button" 
-            onClick={() => navigate("/login")}
-            onMouseEnter={(e) => e.target.classList.add('button-hover')}
-            onMouseLeave={(e) => e.target.classList.remove('button-hover')}
-          >
-            <span className="button-icon">🔓</span>
-            <span className="button-text">Iniciar Jogo</span>
-          </button>
+          <footer>
+            <button 
+              className="start-button" 
+              onClick={() => navigate("/login")}
+            >
+              <span className="button-icon">🔓</span>
+              <span className="button-text">Iniciar Jogo</span>
+            </button>
+          </footer>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
